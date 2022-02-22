@@ -18,7 +18,7 @@ This document is my attempt at responding to the Project Assignment 1 in the Cou
 
 *LOAD THE REQUIRED PACKAGES*
 
-```{r}
+```{r echo = TRUE} 
 library(dplyr)
 library(lubridate)
 library(ggplot2)
@@ -26,18 +26,18 @@ library(ggplot2)
 
 *LOAD THE DATA*
 
-```{r}
+```{r echo = TRUE}
 activity <- read.csv("activity.csv", header = TRUE, sep = ',', colClasses = c("numeric", "character", "integer"))
 ```
 *CONVERT DATE COLUMN TO DATE*
 
-```{r}
+```{r echo = TRUE}
 activity$date <- ymd(activity$date)
 ```
 
 1. Calculating the mean total numberof steps taken per day
 
-```{r}
+```{r echo = TRUE}
 steps <- activity %>%
   filter(!is.na(steps)) %>%
   group_by(date) %>%
@@ -47,13 +47,13 @@ steps <- activity %>%
 ```
 2. Constructing the histogram of steps taken per day
 
-```{r} 
+```{r echo = TRUE} 
 ggplot(steps, aes(x = steps)) + geom_histogram(fill = "blue", binwidth = 1000) + labs(title = "Histogram of Steps per day", x = "Steps per day", y = "Frequency")
 ```
 
 3. Mean and Median of the Total Number of Steps per Day
 
-```{r}
+```{r echo = TRUE}
 mean_steps <- mean(steps$steps, na.rm = TRUE)
 median_steps <- median(steps$steps, na.rm = TRUE)
 
@@ -66,7 +66,7 @@ median_steps
 
 1a. Calculate the average steps 
 
-```{r}
+```{r echo = TRUE}
 
 interval <- activity %>%
   filter(!is.na(steps)) %>%
@@ -76,7 +76,7 @@ interval <- activity %>%
 ```
 
 1b. Plot the graph
-```{r}
+```{r echo = TRUE}
 
 ggplot(interval, aes(x=interval, y=steps)) +
   geom_line(color = "blue") + labs(title = "Graph of Interval Against Average Steps Taken")
@@ -85,7 +85,7 @@ ggplot(interval, aes(x=interval, y=steps)) +
 
 2. Interval with maximum number of steps
 
-```{r}
+```{r echo = TRUE}
 
 interval[which.max(interval$steps),]
 
@@ -93,7 +93,7 @@ interval[which.max(interval$steps),]
 
 *Imputing missing values*
 
-```{r}
+```{r echo = TRUE}
 
 activity_full <- activity
 nas <- is.na(activity_full$steps)
@@ -103,7 +103,7 @@ activity_full$steps[nas] <- avg_interval[as.character(activity_full$interval[nas
 ```
 **Calculating the steps after inputting missing values**
 
-```{r}
+```{r echo = TRUE}
 steps_full <- activity_full %>%
   filter(!is.na(steps)) %>%
   group_by(date) %>%
@@ -114,12 +114,12 @@ steps_full <- activity_full %>%
 
 **Drawing the histogram**
 
-```{r} 
+```{r echo = TRUE} 
 ggplot(steps_full, aes(x = steps)) + geom_histogram(fill = "blue", binwidth = 1000) + labs(title = "Histogram of Steps including missing values per day", x = "Steps per day", y = "Frequency")
 ```
 **Mean and Median of Full Data**
 
-```{r}
+```{r echo = TRUE}
 
 mean_steps_full <- mean(steps_full$steps)
 median_steps_full <- median(steps_full$steps)
@@ -135,7 +135,7 @@ After inputting the missing the values, the mean remained the same, hwover the m
 
 1.Inputting weekdays or weekends
 
-```{r}
+```{r echo = TRUE}
 
 activity_full <- mutate(activity_full, weektype = ifelse(weekdays(activity_full$date) == "Saturday" | weekdays(activity_full$date) == "Sunday", "weekend", "weekday"))
 activity_full$weektype <- as.factor(activity_full$weektype)
